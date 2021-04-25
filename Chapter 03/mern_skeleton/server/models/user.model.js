@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import crypto from 'crypto';
 
+//Defines how the UserModels Schema should be (what fields are stored)
 const UserSchema =  new mongoose.Schema({
     name: {
         type: String,
@@ -26,6 +27,7 @@ const UserSchema =  new mongoose.Schema({
     salt: String
 });
 
+//Using a virtual field (we do not want to directly store the password typed by the user in our db)
 UserSchema
     .virtual('password')
     .set(function(password){
@@ -37,6 +39,7 @@ UserSchema
         return this._password;
     });
 
+//Adding validations to a particular field a part of the UserModel
 UserSchema.path('hashed_password')
     .validate(function(v){
         if(this._password && this._password.length < 6) {
@@ -47,6 +50,7 @@ UserSchema.path('hashed_password')
         }
     }, null);
 
+//Associating a few methods with the UserSchema / UserModel
 UserSchema.methods = {
     authenticate: function(plainText) {
         return this.encryptPassword(plainText) === this.hashed_password;
@@ -64,7 +68,7 @@ UserSchema.methods = {
     },
     makeSalt: function() {
         return Math.round((new Date().valueOf() * Math.random())) + '';
-    }
+    }   
 }
 
 export default mongoose.model('User', UserSchema);
