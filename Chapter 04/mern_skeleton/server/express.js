@@ -4,22 +4,29 @@ import cookieParser from 'cookie-parser';
 import compress from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
-
-import devBundle from './devBundle';
+import path from 'path';
 
 import Template from './../template';
 
 import userRoutes from './routes/user.routes';
 import authRoutes from './routes/auth.routes';
-//lines 8 & 16 should be commented out when running in production mode
+
+import devBundle from './devBundle'; //comment out when using production environment
+
+console.log(`Express.js`);
+const CURRENT_WORKING_DIR = process.cwd();
 const app = express();
-devBundle.compile(app);
+
+devBundle.compile(app); //comment out when using production environment
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(compress());
 app.use(helmet());
 app.use(cors());
+
+app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
 
 
 app.get('/', (req, res) => {

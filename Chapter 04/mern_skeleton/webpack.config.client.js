@@ -2,10 +2,12 @@ const path = require('path');
 const webpack = require('webpack');
 const CURRENT_WORKING_DIR = process.cwd();
 
+console.log(`webpack.config.client.js`);
+
 const config = {
-    name: 'browser',
+    name: "browser",
     mode: "development",
-    devtool: 'eval-source-map',//helps map bundle code to source code
+    devtool: 'source-map',
     entry: [
         'webpack-hot-middleware/client?reload=true',
         path.join(CURRENT_WORKING_DIR, 'client/main.js')
