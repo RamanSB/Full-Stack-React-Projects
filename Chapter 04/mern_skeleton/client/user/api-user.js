@@ -41,7 +41,7 @@ const read = async (params, credentials, signal) => {
         return await response.json();
     } catch (err) {
         console.log(err);
-    }
+    }red
 }
 
 const update = async (params, credentials, user) => {
